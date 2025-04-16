@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 146e5e7b4fcc5a44d830a0d48eec3f57, type: 3}
+  m_Name: TeleportOrbConfig
+  m_EditorClassIdentifier: 
+  orbSpeed: 124.74
+  teleportOrbPrefab: {fileID: 1764223577736532059, guid: 65f5e5a6124aa0044981980f380feaf0, type: 3}
+  gravity: 1

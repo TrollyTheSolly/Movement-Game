@@ -1,0 +1,21 @@
+using UnityEngine;
+
+public class PlayerJumping : IPlayerState
+{
+    public void Enter(PlayerContext context)
+    {
+
+    }
+
+    public void Exit(PlayerContext context)
+    {
+
+    }
+
+    public Vector3 Update(PlayerContext context)
+    {
+        Vector3 newVelocity = context.currentVelocity;
+        newVelocity.y = context.movementConfig.jumpForce;
+        return newVelocity;
+    }
+}
