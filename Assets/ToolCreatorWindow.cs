@@ -5,9 +5,7 @@ using System.IO;
 public class ToolCreatorWindow : EditorWindow
 {
     private string toolName = "NewTool";
-    private GameObject heldPrefab;
     private string toolsDirectory = "Assets/Scripts/Tools";
-    private string configsDirectory = "Assets/Resources/Configs";
 
     [MenuItem("Tools/Tool Creator")]
     public static void ShowWindow()
@@ -20,10 +18,8 @@ public class ToolCreatorWindow : EditorWindow
         GUILayout.Label("Tool Creator", EditorStyles.boldLabel);
 
         toolName = EditorGUILayout.TextField("Tool Name:", toolName);
-        heldPrefab = (GameObject)EditorGUILayout.ObjectField("Held Prefab:", heldPrefab, typeof(GameObject), false);
 
         toolsDirectory = EditorGUILayout.TextField("Tools Directory:", toolsDirectory);
-        configsDirectory = EditorGUILayout.TextField("Configs Directory:", configsDirectory);
 
         if (GUILayout.Button("Create Tool"))
         {
@@ -43,8 +39,6 @@ public class ToolCreatorWindow : EditorWindow
         string toolSubDirectory = Path.Combine(toolsDirectory, toolName);
         if (!Directory.Exists(toolSubDirectory))
             Directory.CreateDirectory(toolSubDirectory);
-        if (!Directory.Exists(configsDirectory))
-            Directory.CreateDirectory(configsDirectory);
 
         // Create Tool class file
         string toolFilePath = Path.Combine(toolSubDirectory, $"Tool{toolName}.cs");
@@ -53,10 +47,6 @@ public class ToolCreatorWindow : EditorWindow
         // Create Config class file
         string configClassFilePath = Path.Combine(toolSubDirectory, $"{toolName}Config.cs");
         File.WriteAllText(configClassFilePath, GenerateConfigClassContent());
-
-        // Create Config asset
-        string configAssetPath = $"{configsDirectory}/{toolName}Config.asset";
-        CreateConfigAsset(configAssetPath);
 
         AssetDatabase.Refresh();
         EditorUtility.DisplayDialog("Success", $"Tool {toolName} created successfully!", "OK");
@@ -115,22 +105,5 @@ public class {toolName}Config : ScriptableObject
 {{
     public GameObject HeldPrefab;
 }}";
-    }
-
-    private void CreateConfigAsset(string assetPath)
-    {
-        var configAsset = ScriptableObject.CreateInstance($"{toolName}Config");
-        AssetDatabase.CreateAsset(configAsset, assetPath);
-
-        // Set the held prefab reference if available
-        if (heldPrefab != null)
-        {
-            SerializedObject serializedObject = new SerializedObject(configAsset);
-            SerializedProperty prefabProperty = serializedObject.FindProperty("HeldPrefab");
-            prefabProperty.objectReferenceValue = heldPrefab;
-            serializedObject.ApplyModifiedProperties();
-        }
-
-        AssetDatabase.SaveAssets();
     }
 }
