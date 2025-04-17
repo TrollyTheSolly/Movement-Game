@@ -143,7 +143,12 @@ public class ProceduralCityGenerator : MonoBehaviour
                 continue;
             }
 
-            if (Vector3.Distance(spawnedBuildings[i].transform.position, playerPos) > cleanupDistance)
+            // Calculate horizontal distance only (ignoring Y axis)
+            Vector2 playerPosHorizontal = new Vector2(playerPos.x, playerPos.z);
+            Vector2 buildingPosHorizontal = new Vector2(spawnedBuildings[i].transform.position.x, spawnedBuildings[i].transform.position.z);
+            float horizontalDistance = Vector2.Distance(playerPosHorizontal, buildingPosHorizontal);
+
+            if (horizontalDistance > cleanupDistance)
             {
                 Destroy(spawnedBuildings[i]);
                 spawnedBuildings.RemoveAt(i);

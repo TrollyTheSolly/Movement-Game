@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: DefaultPlayerMovement
   m_EditorClassIdentifier: 
   gravity: 1
-  walkSpeed: 0.2
-  runSpeed: 0.4
+  walkSpeed: 2
+  runSpeed: 4
   jumpForce: 0.5
   acceleration: 1.86
   decelerationRate: 2.11
   overSpeedDeceleration: 7.39
-  airborneAcceleration: 0.2
+  airborneAcceleration: 2.05
   jumpBufferFrames: 10
+  interpolate: 1

@@ -15,9 +15,9 @@ public class ToolRocketLauncher : ToolBase
     }
     public override void Activate(ToolContext context)
     {
-        _rocketInstance = GameObject.Instantiate(config.rocketPrefab, context.PlayerLocation + context.CameraTransform.forward * 2, Quaternion.identity);
-        _rocketInstance.GetComponent<RocketBehaviour>().Configure(config.rocketSpeed, config.explosionRadius, config.explosionForce, config.explosionRadiusFalloff);
-        _rocketInstance.transform.rotation = context.CameraTransform.rotation;
+        _rocketInstance = GameObject.Instantiate(config.rocketPrefab, context.PlayerLocation + context.CameraTransform.forward * 2, context.CameraTransform.rotation);
+        _rocketInstance.GetComponent<RocketBehaviour>().Configure(config.rocketSpeed, config.explosionRadius, config.explosionForce, config.explosionRadiusFalloff, config.explosionEffect);
+        //_rocketInstance.transform.rotation = context.CameraTransform.rotation;
     }
 
     public override void Clear(ToolContext context)

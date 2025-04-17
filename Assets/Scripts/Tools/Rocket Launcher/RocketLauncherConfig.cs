@@ -7,4 +7,5 @@ public class RocketLauncherConfig : ScriptableObject
     public float explosionRadius = 1f;
     public float explosionForce = 1f;
     public float explosionRadiusFalloff = 1f;
+    public GameObject explosionEffect;
 }

@@ -12,11 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e47569e056cc0458662d3412c14f70, type: 3}
   m_Name: GrappleHookConfig
   m_EditorClassIdentifier: 
-  ropeLength: 30
-  grappleDistance: 40
-  ropeStiffness: 0.07
+  ropeLength: 260.2707
+  grappleDistance: 448.8
+  ropeStiffness: 0.05
   ropePrefab: {fileID: 7144574895486319919, guid: 8af333ba98c9f0c4d85ef1abb5cb6116, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 55
-  dampingFactor: 0
+  dampingFactor: 0.05
+  grappleControlFactor: 0.5
+  useForgivingAim: 1
+  spreadRayCount: 8
+  spreadAngle: 10
+  useVerticalSpread: 1
+  verticalRayCount: 3
+  verticalSpreadAngle: 8
+  visualizeRays: 1

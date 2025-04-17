@@ -7,6 +7,7 @@ public class RocketBehaviour : MonoBehaviour
     private float explosionForce = 1f;
     private float explosionRadiusFalloff = 1f;
     private VelocityModifierSystem modifierSystem;
+    private GameObject explosionEffect;
 
 
     public void Awake()
@@ -14,17 +15,18 @@ public class RocketBehaviour : MonoBehaviour
         modifierSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<VelocityModifierSystem>();
     }
 
-    public void Configure(float speed, float explosionRadius, float explosionForce, float explosionRadiusFalloff)
+    public void Configure(float speed, float explosionRadius, float explosionForce, float explosionRadiusFalloff, GameObject explosionSystem)
     {
         this.rocketSpeed = speed;
         this.explosionRadius = explosionRadius;
         this.explosionForce = explosionForce;
         this.explosionRadiusFalloff = explosionRadiusFalloff;
+        explosionEffect = explosionSystem;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        transform.position += rocketSpeed * transform.forward * Time.fixedDeltaTime;
+        transform.position += rocketSpeed * transform.forward * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -63,6 +65,9 @@ public class RocketBehaviour : MonoBehaviour
         }
 
         // Destroy the rocket after explosion
+        GameObject explosionInstance = GameObject.Instantiate(explosionEffect, position:transform.position, Quaternion.identity);
+        Destroy(explosionInstance, 1f);
         Destroy(gameObject);
     }
+
 }

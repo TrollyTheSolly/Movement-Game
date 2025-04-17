@@ -110,7 +110,7 @@ public class PlayerStateManager : MonoBehaviour
 
     void ApplyGravity()
     {
-        if (controller.isGrounded && _currentState != LookupState(State.Jumping))
+        if (controller.isGrounded && _currentState != LookupState(State.Jumping) && _currentState != LookupState(State.Grappling))
         {
             currentVelocity.y = -0.1f;
         }
