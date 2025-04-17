@@ -5,7 +5,7 @@ public class PlayerToolManager : MonoBehaviour
 {
     [SerializeField] public List<ToolBase> toolbelt = new List<ToolBase>();
     [SerializeField] private PlayerStateManager stateManager;
-    [SerializeField] private int maxTools = 0;
+    //[SerializeField] private int maxTools = 0;
     [SerializeField] private int currentTool = 0;
     private int lastToolUsed = 0;
 
@@ -13,8 +13,6 @@ public class PlayerToolManager : MonoBehaviour
     private PlayerInputActions _playerControls;
     private Transform cameraTransform;
     [SerializeField] private VelocityModifierSystem modifierSystem;
-
-    [SerializeField] private GameObject jumpPadPrefab;
     [SerializeField] private Transform visualTransform;
 
     private void Awake() => _playerControls = new PlayerInputActions();

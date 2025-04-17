@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Tools/Rocket Launcher Tool")]
 public class ToolRocketLauncher : ToolBase
 {
     private GameObject _rocketInstance;
