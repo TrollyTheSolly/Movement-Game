@@ -227,11 +227,4 @@ public class PlayerStateManager : MonoBehaviour
         Vector3 interpolatedPosition = Vector3.Lerp(_lastFixedPosition, _currentFixedPosition, interpolationFactor);
         visualTransform.position = interpolatedPosition;
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(transform.position + Vector3.up * (controller.height / 2f), Vector3.up * checkHeadDistance);
-    }
-
-
 }
