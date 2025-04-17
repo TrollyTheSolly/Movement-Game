@@ -9,10 +9,13 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_ChomperHit
   m_Shader: {fileID: 4800000, guid: 0dde7f0097aeb2541aea684ca0ad0e3c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _ALBEDOVERTEXCOLORMODE_REPLACE
   - _CAST_SHADOWS_ON
   - _COLORRAMPLIGHTINGSTAGE_BEFORELIGHTING
+  - _EMISSION_ON
   - _FADE_BURN_ON
   - _GREYSCALESTAGE_BEFORELIGHTING
   - _HEIGHTGRADIENTPOSITIONSPACE_LOCAL
@@ -35,6 +38,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -197,13 +201,14 @@ Material:
     - _DistortTexXSpeed: 2
     - _DistortTexYSpeed: 2
     - _DstBlend: 0
-    - _EmissionEnabled: 0
+    - _EmissionEnabled: 1
     - _EmissionSelfGlow: 1
     - _FaceDownCutoff: 0.25
     - _FadeAmount: 0
     - _FadeBurnOn: 1
     - _FadeBurnWidth: 0.018
     - _FadeOn: 0
+    - _FadePower: 1
     - _FadeTransition: 0.046
     - _FogOn: 0
     - _GeneralAlpha: 1
@@ -259,7 +264,7 @@ Material:
     - _MatcapIntensity: 4
     - _MaxGradientHeight: 0.75
     - _MaxInflate: 0.2
-    - _MaxRim: 1
+    - _MaxRim: 0.666
     - _Metallic: 0
     - _MinGradientHeight: 0
     - _MinInflate: 0
@@ -343,7 +348,7 @@ Material:
     - _AOColor: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DepthGlowColor: {r: 1, g: 0.9869999, b: 0.6, a: 1}
-    - _EmissionColor: {r: 2.060293, g: 1.9203796, b: 21.655357, a: 1}
+    - _EmissionColor: {r: 0.7454045, g: 0.019382361, b: 0, a: 1}
     - _FadeBurnColor: {r: 1.7411011, g: 0.35348308, b: 0, a: 1}
     - _GlitchOffset: {r: -0.5, g: 0, b: 0, a: 0}
     - _GradientHeightColor01: {r: 0.2, g: 0.2, b: 0.2, a: 1}
@@ -361,3 +366,4 @@ Material:
     - _ShakeSpeed: {r: 41, g: 49, b: 45, a: 0}
     - _VertexDistortionNoiseSpeed: {r: 4, g: 4, b: 0, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

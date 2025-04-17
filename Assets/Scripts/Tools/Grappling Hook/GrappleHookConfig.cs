@@ -8,4 +8,5 @@ public class GrappleHookConfig : ScriptableObject
     public float ropeStiffness;
     public GameObject ropePrefab;
     public LayerMask layerMask;
+    public float dampingFactor;
 }

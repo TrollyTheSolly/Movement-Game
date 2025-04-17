@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e880cd2dc99464448c309c59d4e11ae, type: 3}
   m_Name: DefaultPlayerMovement
   m_EditorClassIdentifier: 
-  gravity: 2.02
+  gravity: 1
   walkSpeed: 0.2
   runSpeed: 0.4
-  jumpForce: 1
+  jumpForce: 0.5
   acceleration: 1.86
   decelerationRate: 2.11
   overSpeedDeceleration: 7.39

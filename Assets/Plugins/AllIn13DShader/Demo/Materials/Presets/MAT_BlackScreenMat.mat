@@ -9,8 +9,12 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_BlackScreenMat
   m_Shader: {fileID: 4800000, guid: 0dde7f0097aeb2541aea684ca0ad0e3c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _AFFECTED_BY_LIGHTMAPS
   - _ALBEDOVERTEXCOLORMODE_REPLACE
+  - _ALPHA_CUTOFF_ON
   - _CAST_SHADOWS_ON
   - _COLORRAMPLIGHTINGSTAGE_BEFORELIGHTING
   - _GREYSCALESTAGE_BEFORELIGHTING
@@ -18,9 +22,9 @@ Material:
   - _LIGHTMODEL_CLASSIC
   - _MATCAPBLENDMODE_MULTIPLY
   - _OUTLINETYPE_NONE
-  - _REFLECTIONS_NONE
+  - _REFLECTIONS_CLASSIC
   - _RIMLIGHTINGSTAGE_BEFORELIGHTING
-  - _SHADINGMODEL_BASIC
+  - _SHADINGMODEL_PBR
   - _SPECULARMODEL_NONE
   - _TEXTUREBLENDINGMODE_RGB
   - _TEXTUREBLENDINGSOURCE_VERTEXCOLOR
@@ -30,9 +34,10 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -174,10 +179,10 @@ Material:
     - _AOMapEnabled: 0
     - _AOMapStrength: 1
     - _AdvancedConfigurationEnabled: 0
-    - _AffectedByLightmaps: 0
+    - _AffectedByLightmaps: 1
     - _AlbedoVertexColorMode: 1
     - _AlbedoVertexColorOn: 0
-    - _AlphaCutoffOn: 0
+    - _AlphaCutoffOn: 1
     - _AlphaCutoffValue: 0.25
     - _AlphaRoundOn: 0
     - _AnisoOffset: -0.2
@@ -224,6 +229,7 @@ Material:
     - _FadeBurnOn: 0
     - _FadeBurnWidth: 0.01
     - _FadeOn: 0
+    - _FadePower: 1
     - _FadeTransition: 0.2
     - _FogOn: 0
     - _GeneralAlpha: 1
@@ -243,7 +249,7 @@ Material:
     - _HandDrawn: 0
     - _HandDrawnAmount: 10
     - _HandDrawnSpeed: 5
-    - _HardnessFakeGI: 0.9
+    - _HardnessFakeGI: 0.746
     - _HeightGradientOn: 0
     - _HeightGradientPositionSpace: 0
     - _HighlightCutoff: 0.5
@@ -313,8 +319,8 @@ Material:
     - _PosterizeGamma: 0.75
     - _PosterizeNumColors: 8
     - _RecalculateNormals: 0
-    - _Reflections: 0
-    - _ReflectionsAtten: 0.046
+    - _Reflections: 1
+    - _ReflectionsAtten: 0.549
     - _RenderPreset: 1
     - _RimAttenuation: 0.7
     - _RimLighting: 0
@@ -329,7 +335,7 @@ Material:
     - _ScrollTextureOn: 0
     - _ScrollTextureX: 1
     - _ScrollTextureY: 1
-    - _ShadingModel: 0
+    - _ShadingModel: 1
     - _ShakeBlend: 1
     - _ShakeSpeedMult: 1
     - _Shininess: 16
@@ -407,3 +413,4 @@ Material:
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _VertexDistortionNoiseSpeed: {r: 4, g: 4, b: 0, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

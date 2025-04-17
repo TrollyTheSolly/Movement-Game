@@ -27,7 +27,7 @@ public class PlayerGrappling : IPlayerState
         if (stretch <= 0)
             return context.currentVelocity;
 
-        Vector3 tensionForce = -forceDirection * stretch * grappleTool.config.ropeStiffness * Time.fixedDeltaTime;
+        Vector3 tensionForce = -forceDirection * stretch * grappleTool.config.ropeStiffness;
 
         Vector3 velocity = context.currentVelocity;
         Vector3 parallelVelocity = Vector3.Project(velocity, forceDirection);
@@ -35,6 +35,8 @@ public class PlayerGrappling : IPlayerState
 
         Vector3 correctedVelocity = tangentialVelocity + parallelVelocity * 0.5f;
 
-        return correctedVelocity + tensionForce;
+        Vector3 dampingForce = -velocity * grappleTool.config.dampingFactor * Time.fixedDeltaTime;
+
+        return correctedVelocity + tensionForce + dampingForce;
     }
 }
