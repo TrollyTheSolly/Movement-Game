@@ -12,4 +12,5 @@ public class PlayerMovementConfig : ScriptableObject
     public float overSpeedDeceleration = 1f;
     public float airborneAcceleration = 1f;
     public int jumpBufferFrames = 30;
+    public bool interpolate = false;
 }

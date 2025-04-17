@@ -15,6 +15,7 @@ public class PlayerToolManager : MonoBehaviour
     [SerializeField] private VelocityModifierSystem modifierSystem;
 
     [SerializeField] private GameObject jumpPadPrefab;
+    [SerializeField] private Transform visualTransform;
 
     private void Awake() => _playerControls = new PlayerInputActions();
     private void OnEnable() => _playerControls.Enable();
@@ -76,6 +77,7 @@ public class PlayerToolManager : MonoBehaviour
         toolContext.Executor = this;
         toolContext.ModifierSystem = modifierSystem;
         toolContext.PlayerTransform = transform;
+        toolContext.PlayerVisualTransform = visualTransform;
     }
 
     public ToolBase GetCurrentTool()

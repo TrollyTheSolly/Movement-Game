@@ -20,11 +20,17 @@ public class PlayerStateManager : MonoBehaviour
 
     private PlayerContext _context = new PlayerContext();
     private Transform _cameraTransform;
+    [SerializeField] private Transform visualTransform;
 
     private bool _jumpRequested = false;
 
     private Dictionary<State, IPlayerState> _stateMap;
-    
+
+    //Interpolation
+    private Vector3 _lastFixedPosition;
+    private Vector3 _currentFixedPosition;
+    private float _fixedDeltaTimeTimer = 0f;
+
 
     private void Awake()
     {
@@ -72,6 +78,8 @@ public class PlayerStateManager : MonoBehaviour
         if (newState == State.Jumping) _jumpRequested = true;
         IPlayerState newPlayerState = LookupState(newState);
         if (newPlayerState != _currentState) SetState(newPlayerState);
+
+        InterpolatePosition();
     }
 
     void FixedUpdate()
@@ -92,6 +100,11 @@ public class PlayerStateManager : MonoBehaviour
         CheckHeadCollision();
         CheckSideCollision();
         controller.Move(currentVelocity);
+        //Interpolation
+        _lastFixedPosition = _currentFixedPosition;
+        _currentFixedPosition = transform.position;
+        _fixedDeltaTimeTimer = 0f;
+
         _jumpRequested = false;
     }
 
@@ -202,8 +215,23 @@ public class PlayerStateManager : MonoBehaviour
         }
     }
 
+    private void InterpolatePosition()
+    {
+        if (movementConfig.interpolate == false) return;
+
+        _fixedDeltaTimeTimer += Time.deltaTime;
+
+        float interpolationFactor = _fixedDeltaTimeTimer / Time.fixedDeltaTime;
+        interpolationFactor = Mathf.Clamp01(interpolationFactor);
+
+        Vector3 interpolatedPosition = Vector3.Lerp(_lastFixedPosition, _currentFixedPosition, interpolationFactor);
+        visualTransform.position = interpolatedPosition;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(transform.position + Vector3.up * (controller.height / 2f), Vector3.up * checkHeadDistance);
     }
+
+
 }

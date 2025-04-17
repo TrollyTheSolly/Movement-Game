@@ -30,7 +30,7 @@ public class ToolGrapplingHook : ToolBase
 
                 ropeInstance = GameObject.Instantiate(config.ropePrefab);
                 var ropeScript = ropeInstance.GetComponent<GrappleRope>();
-                ropeScript.Initialize(context.PlayerTransform, grapplePoint);
+                ropeScript.Initialize(context.PlayerVisualTransform, grapplePoint);
             }
         }
     }
