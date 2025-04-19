@@ -4,6 +4,7 @@ public class ToolRocketLauncher : ToolBase
 {
     private GameObject _rocketInstance;
     private RocketLauncherConfig config;
+    private GameObject instantiatedRocketLauncher;
 
     public ToolRocketLauncher()
     {
@@ -15,8 +16,8 @@ public class ToolRocketLauncher : ToolBase
     }
     public override void Activate(ToolContext context)
     {
-        _rocketInstance = GameObject.Instantiate(config.rocketPrefab, context.PlayerLocation + context.CameraTransform.forward * 2, context.CameraTransform.rotation);
-        _rocketInstance.GetComponent<RocketBehaviour>().Configure(config.rocketSpeed, config.explosionRadius, config.explosionForce, config.explosionRadiusFalloff, config.explosionEffect);
+        _rocketInstance = GameObject.Instantiate(config.rocketPrefab, context.CameraTransform.position + config.rocketSpawnOffset, context.CameraTransform.rotation);
+        _rocketInstance.GetComponent<RocketBehaviour>().Configure(config, context.PlayerVelocity);
         //_rocketInstance.transform.rotation = context.CameraTransform.rotation;
     }
 
@@ -27,11 +28,12 @@ public class ToolRocketLauncher : ToolBase
 
     public override void Held(ToolContext context)
     {
-
+        Debug.Log("Spawning rocket launcher");
+        instantiatedRocketLauncher = GameObject.Instantiate(config.rocketLauncherPrefab, context.CameraTransform);
     }
 
     public override void Unheld(ToolContext context)
     {
-
+        GameObject.Destroy(instantiatedRocketLauncher);
     }
 }

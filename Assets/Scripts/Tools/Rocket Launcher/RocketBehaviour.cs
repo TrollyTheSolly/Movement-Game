@@ -1,39 +1,43 @@
+using TMPro;
 using UnityEngine;
 
 public class RocketBehaviour : MonoBehaviour
 {
-    private float rocketSpeed = 1f;
-    private float explosionRadius = 1f;
-    private float explosionForce = 1f;
-    private float explosionRadiusFalloff = 1f;
+    private Vector3 startVelocity = Vector3.zero;
     private VelocityModifierSystem modifierSystem;
-    private GameObject explosionEffect;
+    private RocketLauncherConfig config;
+    private Rigidbody rb;
 
 
     public void Awake()
     {
         modifierSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<VelocityModifierSystem>();
+        rb = GetComponent<Rigidbody>();
     }
 
-    public void Configure(float speed, float explosionRadius, float explosionForce, float explosionRadiusFalloff, GameObject explosionSystem)
+    public void Configure(RocketLauncherConfig rocketConfig, Vector3 playerVelocity)
     {
-        this.rocketSpeed = speed;
-        this.explosionRadius = explosionRadius;
-        this.explosionForce = explosionForce;
-        this.explosionRadiusFalloff = explosionRadiusFalloff;
-        explosionEffect = explosionSystem;
+        this.config = rocketConfig;
+        this.startVelocity = playerVelocity;
     }
 
     private void Update()
     {
-        transform.position += rocketSpeed * transform.forward * Time.deltaTime;
+        Vector3 totalVelocity = config.rocketSpeed * transform.forward;
+
+        if (config.relativeRocketspeed)
+        {
+            totalVelocity += startVelocity;
+        }
+        rb.MovePosition(rb.position + totalVelocity * Time.deltaTime);
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player")) return;
 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, config.explosionRadius);
         foreach (var hitCollider in hitColliders)
         {
             if (hitCollider.gameObject.CompareTag("Player"))
@@ -46,18 +50,18 @@ public class RocketBehaviour : MonoBehaviour
 
                 // Calculate falloff based on distance
                 float falloffFactor = 1f;
-                if (explosionRadiusFalloff > 0)
+                if (config.explosionRadiusFalloff > 0)
                 {
                     // Normalized distance (0 at center, 1 at edge of radius)
-                    float normalizedDistance = explosionDistance / explosionRadius;
+                    float normalizedDistance = explosionDistance / config.explosionRadius;
                     // Apply falloff curve (inverse power)
-                    falloffFactor = Mathf.Pow(1 - normalizedDistance, explosionRadiusFalloff);
+                    falloffFactor = Mathf.Pow(1 - normalizedDistance, config.explosionRadiusFalloff);
                     // Clamp to ensure it doesn't go negative
                     falloffFactor = Mathf.Clamp01(falloffFactor);
                 }
 
                 // Calculate final force
-                float finalForce = explosionForce * falloffFactor;
+                float finalForce = config.explosionForce * falloffFactor;
 
                 // Apply force to player
                 modifierSystem.AddModifier(explosionDir * finalForce);
@@ -65,7 +69,7 @@ public class RocketBehaviour : MonoBehaviour
         }
 
         // Destroy the rocket after explosion
-        GameObject explosionInstance = GameObject.Instantiate(explosionEffect, position:transform.position, Quaternion.identity);
+        GameObject explosionInstance = GameObject.Instantiate(config.explosionEffect, position:transform.position, Quaternion.identity);
         Destroy(explosionInstance, 1f);
         Destroy(gameObject);
     }

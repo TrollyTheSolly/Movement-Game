@@ -17,10 +17,12 @@ public class PlayerStateManager : MonoBehaviour
     private PlayerInputActions playerControls;
 
     private IPlayerState _currentState;
+    private IPlayerState _lastState;
 
     private PlayerContext _context = new PlayerContext();
     private Transform _cameraTransform;
     [SerializeField] private Transform visualTransform;
+    [SerializeField] private FeedbackManager feedbackManager;
 
     private bool _jumpRequested = false;
 
@@ -75,10 +77,16 @@ public class PlayerStateManager : MonoBehaviour
 
         UpdateContext();
         State newState = DecideState();
+        
         if (newState == State.Jumping) _jumpRequested = true;
-        IPlayerState newPlayerState = LookupState(newState);
-        if (newPlayerState != _currentState) SetState(newPlayerState);
 
+        IPlayerState newPlayerState = LookupState(newState);
+
+        if (newPlayerState != _currentState)
+        {
+            SetState(newPlayerState);
+            CallFeedbacks();
+        }
         InterpolatePosition();
     }
 
@@ -133,6 +141,7 @@ public class PlayerStateManager : MonoBehaviour
 
     State DecideState()
     {
+        _lastState = _currentState;
         var grapplingHook = toolManager.GetCurrentTool() as ToolGrapplingHook;
         if (grapplingHook != null && grapplingHook.IsActive())
         {
@@ -150,6 +159,11 @@ public class PlayerStateManager : MonoBehaviour
             }
             else
             {
+                if (_lastState != _currentState && _lastState == LookupState(State.Airborne))
+                {
+                    feedbackManager.PlayLandingFeedback();
+                }
+
                 if (playerControls.Player.Run.IsPressed())
                 {
                     return State.Running;
@@ -226,5 +240,19 @@ public class PlayerStateManager : MonoBehaviour
 
         Vector3 interpolatedPosition = Vector3.Lerp(_lastFixedPosition, _currentFixedPosition, interpolationFactor);
         visualTransform.position = interpolatedPosition;
+    }
+
+    private void CallFeedbacks()
+    {
+        if (_lastState != _currentState && _lastState == LookupState(State.Airborne) && _currentState != LookupState(State.Jumping) && _currentState != LookupState(State.Grappling))
+        {
+            feedbackManager.PlayLandingFeedback();
+            return;
+        }
+        if (_currentState == LookupState(State.Jumping))
+        {
+            feedbackManager.PlayJumpFeedback();
+            return;
+        }
     }
 }
