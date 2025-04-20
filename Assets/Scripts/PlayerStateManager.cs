@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 public class PlayerStateManager : MonoBehaviour
 {
@@ -11,18 +9,18 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private CharacterController controller;
     [SerializeField] private PlayerToolManager toolManager;
     [SerializeField] private float checkHeadDistance = 0.1f;
+    [SerializeField] private Transform visualTransform;
+    [SerializeField] private FeedbackManager feedbackManager;
+    [SerializeField] private PlayerInputHandler inputHandler;  // Reference to our new input handler
+
     private int _framesSinceBuffer = 0;
     private bool _jumpBuffered = false;
-
-    private PlayerInputActions playerControls;
 
     private IPlayerState _currentState;
     private IPlayerState _lastState;
 
     private PlayerContext _context = new PlayerContext();
     private Transform _cameraTransform;
-    [SerializeField] private Transform visualTransform;
-    [SerializeField] private FeedbackManager feedbackManager;
 
     private bool _jumpRequested = false;
 
@@ -36,8 +34,17 @@ public class PlayerStateManager : MonoBehaviour
 
     private void Awake()
     {
-        playerControls = new PlayerInputActions();
         _cameraTransform = Camera.main.transform;
+
+        // If we don't have a reference, try to get from this GameObject
+        if (inputHandler == null)
+        {
+            inputHandler = GetComponent<PlayerInputHandler>();
+            if (inputHandler == null)
+            {
+                Debug.LogError("PlayerInputHandler component is missing!");
+            }
+        }
 
         //States created here
         _stateMap = new Dictionary<State, IPlayerState>
@@ -52,12 +59,28 @@ public class PlayerStateManager : MonoBehaviour
 
     private void OnEnable()
     {
-        playerControls.Enable();
+        // Subscribe to input events
+        if (inputHandler != null)
+        {
+            inputHandler.OnJumpInput += HandleJumpInput;
+        }
     }
 
     private void OnDisable()
     {
-        playerControls.Disable();
+        // Unsubscribe from input events
+        if (inputHandler != null)
+        {
+            inputHandler.OnJumpInput -= HandleJumpInput;
+        }
+    }
+
+    private void HandleJumpInput(bool jumpTriggered)
+    {
+        if (jumpTriggered && !controller.isGrounded)
+        {
+            _jumpBuffered = true;
+        }
     }
 
     private IPlayerState LookupState(State state)
@@ -70,14 +93,9 @@ public class PlayerStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerControls.Player.Jump.triggered && !controller.isGrounded)
-        {
-            _jumpBuffered = true;
-        }
-
         UpdateContext();
         State newState = DecideState();
-        
+
         if (newState == State.Jumping) _jumpRequested = true;
 
         IPlayerState newPlayerState = LookupState(newState);
@@ -130,8 +148,7 @@ public class PlayerStateManager : MonoBehaviour
 
     void UpdateContext()
     {
-        _context.moveInput = playerControls.Player.Move.ReadValue<Vector2>();
-
+        _context.moveInput = inputHandler.GetMoveInput();  // Use the input handler
         _context.currentVelocity = currentVelocity;
         _context.position = transform.position;
         _context.cameraTransform = _cameraTransform;
@@ -150,7 +167,7 @@ public class PlayerStateManager : MonoBehaviour
 
         if (controller.isGrounded)
         {
-            if (playerControls.Player.Jump.triggered || _jumpRequested || _jumpBuffered)
+            if (inputHandler.IsJumpTriggered() || _jumpRequested || _jumpBuffered)
             {
                 _jumpRequested = true;
                 _jumpBuffered = false;
@@ -164,7 +181,7 @@ public class PlayerStateManager : MonoBehaviour
                     feedbackManager.PlayLandingFeedback();
                 }
 
-                if (playerControls.Player.Run.IsPressed())
+                if (inputHandler.IsRunning())
                 {
                     return State.Running;
                 }
@@ -173,7 +190,8 @@ public class PlayerStateManager : MonoBehaviour
                     return State.Walking;
                 }
             }
-        } else
+        }
+        else
         {
             return State.Airborne;
         }

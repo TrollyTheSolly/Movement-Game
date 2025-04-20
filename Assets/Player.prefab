@@ -1233,6 +1233,7 @@ GameObject:
   - component: {fileID: 1616077316259640704}
   - component: {fileID: 621661821057536441}
   - component: {fileID: 1382660975640854983}
+  - component: {fileID: -7896569842565471124}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -1300,6 +1301,7 @@ MonoBehaviour:
   checkHeadDistance: 1.03
   visualTransform: {fileID: 2011486506849142327}
   feedbackManager: {fileID: 8123858852533659515}
+  inputHandler: {fileID: -7896569842565471124}
 --- !u!143 &3216451802954125010
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1365,6 +1367,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dad5269d43e8948429fc0405dbb373a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7896569842565471124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7836295333331079829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eabb961faa879640aa6871a862e8f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8852357226483479768

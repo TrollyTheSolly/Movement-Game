@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.ProBuilder.Shapes;
 
 public class ProceduralCityGenerator : MonoBehaviour
 {
@@ -101,6 +102,8 @@ public class ProceduralCityGenerator : MonoBehaviour
         }
 
         GameObject building = Instantiate(buildingPrefab);
+        MatTiler textureTiling = building.AddComponent<MatTiler>();
+        textureTiling.tilingBase = 0.15f;
 
         // Randomize building size
         float width = Random.Range(buildingWidthRange.x, buildingWidthRange.y);

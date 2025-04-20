@@ -20,5 +20,5 @@ MonoBehaviour:
   decelerationRate: 2.11
   overSpeedDeceleration: 7.39
   airborneAcceleration: 2.05
-  jumpBufferFrames: 10
+  jumpBufferFrames: 8
   interpolate: 1

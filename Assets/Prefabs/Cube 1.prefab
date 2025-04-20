@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 163499149108583234}
   - component: {fileID: 4446705101198393212}
   - component: {fileID: 9030968387365440773}
-  - component: {fileID: -2785028203565594909}
   - component: {fileID: -6923559962900877981}
   - component: {fileID: 5090637629176422581}
   m_Layer: 0
@@ -68,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e067e3cc4a9527a459a4d3f20c2e589d, type: 2}
+  - {fileID: 2100000, guid: 9190c0c0fad0a7e43afa93b8ca0c1940, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -111,19 +110,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-2785028203565594909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2466800633077233083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09fb2c5f145047846ac8e94ce0994dbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currRenderer: {fileID: 4446705101198393212}
 --- !u!54 &-6923559962900877981
 Rigidbody:
   m_ObjectHideFlags: 0
