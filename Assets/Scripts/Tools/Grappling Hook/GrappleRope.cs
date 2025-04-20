@@ -2,27 +2,27 @@ using UnityEngine;
 
 public class GrappleRope : MonoBehaviour
 {
-    private LineRenderer lineRenderer;
-    private Transform startTransform;
-    private Vector3 endPoint;
+    private LineRenderer _lineRenderer;
+    private Transform _startTransform;
+    private Vector3 _endPoint;
 
     public void Initialize(Transform start, Vector3 end)
     {
-        lineRenderer = GetComponent<LineRenderer>();
-        startTransform = start;
-        endPoint = end;
+        _lineRenderer = GetComponent<LineRenderer>();
+        _startTransform = start;
+        _endPoint = end;
 
-        lineRenderer.positionCount = 2;
-        lineRenderer.startWidth = 0.05f;
-        lineRenderer.endWidth = 0.05f;
+        _lineRenderer.positionCount = 2;
+        _lineRenderer.startWidth = 0.05f;
+        _lineRenderer.endWidth = 0.05f;
     }
 
     void Update()
     {
-        if (lineRenderer != null && startTransform != null)
+        if (_lineRenderer != null && _startTransform != null)
         {
-            lineRenderer.SetPosition(0, startTransform.position);
-            lineRenderer.SetPosition(1, endPoint);
+            _lineRenderer.SetPosition(0, _startTransform.position);
+            _lineRenderer.SetPosition(1, _endPoint);
         }
     }
 }

@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Tools/Jump Pad Tool")]
 public class JumpPadConfig : ScriptableObject
 {
-    public float ThrowForce;
-    public float JumpForce;
-    public GameObject JumpPadPrefab;
+    [FormerlySerializedAs("ThrowForce")] public float throwForce;
+    [FormerlySerializedAs("JumpForce")] public float jumpForce;
+    [FormerlySerializedAs("JumpPadPrefab")] public GameObject jumpPadPrefab;
 }

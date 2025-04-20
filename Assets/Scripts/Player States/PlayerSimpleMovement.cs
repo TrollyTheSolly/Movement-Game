@@ -9,19 +9,19 @@ public abstract class PlayerSimpleMovement : IPlayerState
 
     public Vector3 Update(PlayerContext context)
     {
-        Vector3 inputDir = new Vector3(context.moveInput.x, 0f, context.moveInput.y);
-        inputDir = context.cameraTransform.TransformDirection(inputDir);
+        Vector3 inputDir = new Vector3(context.MoveInput.x, 0f, context.MoveInput.y);
+        inputDir = context.CameraTransform.TransformDirection(inputDir);
         inputDir.y = 0f;
         inputDir.Normalize();
 
         float targetSpeed = GetTargetSpeed(context);
         Vector3 targetVelocity = inputDir * targetSpeed;
-        Vector3 currentVelocity = context.currentVelocity;
+        Vector3 currentVelocity = context.CurrentVelocity;
         Vector3 velocityChange = Vector3.zero;
 
-        float maxAccel = context.movementConfig.acceleration * Time.fixedDeltaTime;
-        float maxDecel = context.movementConfig.decelerationRate * Time.fixedDeltaTime;
-        float maxOverSpeedDecel = context.movementConfig.overSpeedDeceleration * Time.fixedDeltaTime;
+        float maxAccel = context.MovementConfig.acceleration * Time.fixedDeltaTime;
+        float maxDecel = context.MovementConfig.decelerationRate * Time.fixedDeltaTime;
+        float maxOverSpeedDecel = context.MovementConfig.overSpeedDeceleration * Time.fixedDeltaTime;
 
         // First check if we're overspeeding (regardless of input)
         if (currentVelocity.magnitude > targetSpeed * 1.01)

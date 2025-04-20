@@ -3,12 +3,12 @@ using UnityEngine;
 public class ToolGhostDash : ToolBase
 {
 
-    private GhostDashConfig config;
+    private GhostDashConfig _config;
 
     public ToolGhostDash()
     {
-        config = Resources.Load<GhostDashConfig>("Configs/GhostDashConfig");
-        if (config == null)
+        _config = Resources.Load<GhostDashConfig>("Configs/GhostDashConfig");
+        if (_config == null)
         {
             Debug.LogError("GhostDashConfig not found! Make sure it is in Resources/Configs/");
         }
@@ -18,10 +18,10 @@ public class ToolGhostDash : ToolBase
     public override void Activate(ToolContext context)
     {
         Debug.Log("Ghost Dash Used.");
-        Debug.Log(config.ghostDashTime);
+        Debug.Log(_config.ghostDashTime);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        Vector3 newPosition = player.GetComponent<Transform>().position + (context.PlayerVelocity * config.ghostDashTime);
-        Vector3 dashDelta = context.PlayerVelocity * config.ghostDashTime;
+        Vector3 newPosition = player.GetComponent<Transform>().position + (context.PlayerVelocity * _config.ghostDashTime);
+        Vector3 dashDelta = context.PlayerVelocity * _config.ghostDashTime;
         player.GetComponent<CharacterController>().Move(dashDelta);
     }
 

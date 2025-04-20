@@ -4,8 +4,8 @@ using System.IO;
 
 public class ToolCreatorWindow : EditorWindow
 {
-    private string toolName = "NewTool";
-    private string toolsDirectory = "Assets/Scripts/Tools";
+    private string _toolName = "NewTool";
+    private string _toolsDirectory = "Assets/Scripts/Tools";
 
     [MenuItem("Tools/Tool Creator")]
     public static void ShowWindow()
@@ -17,9 +17,9 @@ public class ToolCreatorWindow : EditorWindow
     {
         GUILayout.Label("Tool Creator", EditorStyles.boldLabel);
 
-        toolName = EditorGUILayout.TextField("Tool Name:", toolName);
+        _toolName = EditorGUILayout.TextField("Tool Name:", _toolName);
 
-        toolsDirectory = EditorGUILayout.TextField("Tools Directory:", toolsDirectory);
+        _toolsDirectory = EditorGUILayout.TextField("Tools Directory:", _toolsDirectory);
 
         if (GUILayout.Button("Create Tool"))
         {
@@ -29,27 +29,27 @@ public class ToolCreatorWindow : EditorWindow
 
     private void CreateToolFiles()
     {
-        if (string.IsNullOrEmpty(toolName))
+        if (string.IsNullOrEmpty(_toolName))
         {
             EditorUtility.DisplayDialog("Error", "Tool name cannot be empty", "OK");
             return;
         }
 
         // Ensure directories exist
-        string toolSubDirectory = Path.Combine(toolsDirectory, toolName);
+        string toolSubDirectory = Path.Combine(_toolsDirectory, _toolName);
         if (!Directory.Exists(toolSubDirectory))
             Directory.CreateDirectory(toolSubDirectory);
 
         // Create Tool class file
-        string toolFilePath = Path.Combine(toolSubDirectory, $"Tool{toolName}.cs");
+        string toolFilePath = Path.Combine(toolSubDirectory, $"Tool{_toolName}.cs");
         File.WriteAllText(toolFilePath, GenerateToolClassContent());
 
         // Create Config class file
-        string configClassFilePath = Path.Combine(toolSubDirectory, $"{toolName}Config.cs");
+        string configClassFilePath = Path.Combine(toolSubDirectory, $"{_toolName}Config.cs");
         File.WriteAllText(configClassFilePath, GenerateConfigClassContent());
 
         AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("Success", $"Tool {toolName} created successfully!", "OK");
+        EditorUtility.DisplayDialog("Success", $"Tool {_toolName} created successfully!", "OK");
     }
 
     private string GenerateToolClassContent()
@@ -58,24 +58,24 @@ public class ToolCreatorWindow : EditorWindow
     $@"using UnityEngine;
 using TMPro;
 
-public class Tool{toolName} : ToolBase
+public class Tool{_toolName} : ToolBase
 {{
-    private {toolName}Config config;
+    private {_toolName}Config config;
     private GameObject instantiatedHeldObject;
 
-    public Tool{toolName}()
+    public Tool{_toolName}()
     {{
-        config = Resources.Load<{toolName}Config>(""Configs/{toolName}Config"");
+        config = Resources.Load<{_toolName}Config>(""Configs/{_toolName}Config"");
         if (config == null)
         {{
-            Debug.LogError(""{toolName}Config not found! Make sure it is in Resources/Configs/"");
+            Debug.LogError(""{_toolName}Config not found! Make sure it is in Resources/Configs/"");
         }}
     }}
 
     public override void Activate(ToolContext context)
     {{
         // Implement tool-specific activation logic
-        Debug.Log(""{toolName} activated"");
+        Debug.Log(""{_toolName} activated"");
     }}
 
     public override void Clear(ToolContext context)
@@ -100,8 +100,8 @@ public class Tool{toolName} : ToolBase
         return
     $@"using UnityEngine;
 
-[CreateAssetMenu(fileName = ""{toolName}Config"", menuName = ""Tools/{toolName}Config"")]
-public class {toolName}Config : ScriptableObject
+[CreateAssetMenu(fileName = ""{_toolName}Config"", menuName = ""Tools/{_toolName}Config"")]
+public class {_toolName}Config : ScriptableObject
 {{
     public GameObject HeldPrefab;
 }}";

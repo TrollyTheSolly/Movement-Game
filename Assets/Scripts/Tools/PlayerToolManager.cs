@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 public class PlayerToolManager : MonoBehaviour
 {
-    [SerializeField] public List<ToolBase> toolbelt = new List<ToolBase>();
+    [SerializeField] public List<ToolBase> Toolbelt = new List<ToolBase>();
     [SerializeField] private PlayerStateManager stateManager;
     //[SerializeField] private int maxTools = 0;
     [SerializeField] private int currentTool = 0;
-    private int lastToolUsed = 0;
+    private int _lastToolUsed = 0;
 
-    private ToolContext toolContext = new ToolContext();
+    private ToolContext _toolContext = new ToolContext();
     private PlayerInputActions _playerControls;
-    private Transform cameraTransform;
+    private Transform _cameraTransform;
     [SerializeField] private VelocityModifierSystem modifierSystem;
     [SerializeField] private Transform visualTransform;
 
@@ -21,13 +21,13 @@ public class PlayerToolManager : MonoBehaviour
 
     private void Start()
     {
-        cameraTransform = Camera.main.transform;
+        if (Camera.main) _cameraTransform = Camera.main.transform;
 
-        toolbelt.Add(new ToolGrapplingHook());
-        toolbelt.Add(new ToolMomentumFreezer());
-        toolbelt.Add(new ToolGhostDash());
-        toolbelt.Add(new ToolRocketLauncher());
-        toolbelt.Add(new ToolTeleportOrb());
+        Toolbelt.Add(new ToolGrapplingHook());
+        Toolbelt.Add(new ToolMomentumFreezer());
+        Toolbelt.Add(new ToolGhostDash());
+        Toolbelt.Add(new ToolRocketLauncher());
+        Toolbelt.Add(new ToolTeleportOrb());
     }
 
     private void Update()
@@ -46,53 +46,53 @@ public class PlayerToolManager : MonoBehaviour
         if (previousTool != currentTool)
         {
             Debug.Log($"Switching tools: {previousTool} -> {currentTool}");
-            toolbelt[currentTool].Held(toolContext);
-            toolbelt[previousTool].Unheld(toolContext);
+            Toolbelt[currentTool].Held(_toolContext);
+            Toolbelt[previousTool].Unheld(_toolContext);
         }
 
         if (_playerControls.Player.Fire.triggered)
         {
             Debug.Log("Tool used");
-            if (toolbelt.Count > 0)
+            if (Toolbelt.Count > 0)
             {
-                toolbelt[currentTool].Activate(toolContext);
-                if (lastToolUsed != currentTool) toolbelt[lastToolUsed].Clear(toolContext);
-                lastToolUsed = currentTool;
+                Toolbelt[currentTool].Activate(_toolContext);
+                if (_lastToolUsed != currentTool) Toolbelt[_lastToolUsed].Clear(_toolContext);
+                _lastToolUsed = currentTool;
             }
         }
 
         if (_playerControls.Player.Clear.triggered)
         {
-            toolbelt[currentTool].Clear(toolContext);
+            Toolbelt[currentTool].Clear(_toolContext);
         }
     }
 
-    void UpdateContext()
+    private void UpdateContext()
     {
-        toolContext.PlayerLocation = transform.position;
-        toolContext.PlayerVelocity = stateManager.GetVelocity();
-        toolContext.CameraTransform = cameraTransform;
-        toolContext.Executor = this;
-        toolContext.ModifierSystem = modifierSystem;
-        toolContext.PlayerTransform = transform;
-        toolContext.PlayerVisualTransform = visualTransform;
+        _toolContext.PlayerLocation = transform.position;
+        _toolContext.PlayerVelocity = stateManager.GetVelocity();
+        _toolContext.CameraTransform = _cameraTransform;
+        _toolContext.Executor = this;
+        _toolContext.ModifierSystem = modifierSystem;
+        _toolContext.PlayerTransform = transform;
+        _toolContext.PlayerVisualTransform = visualTransform;
     }
 
     public ToolBase GetCurrentTool()
     {
-        return toolbelt[currentTool];
+        return Toolbelt[currentTool];
     }
 
     private void OnDrawGizmos()
     {
-        if (toolbelt != null && toolbelt.Count > 0 && toolbelt[0] != null)
+        if (Toolbelt != null && Toolbelt.Count > 0 && Toolbelt[0] != null)
         {
-            ToolGrapplingHook grapplingHook = toolbelt[0] as ToolGrapplingHook;
+            ToolGrapplingHook grapplingHook = Toolbelt[0] as ToolGrapplingHook;
             if (grapplingHook != null && grapplingHook.IsActive())
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(grapplingHook.grapplePoint, 1f);
-                Gizmos.DrawLine(transform.position, grapplingHook.grapplePoint);
+                Gizmos.DrawWireSphere(grapplingHook.GrapplePoint, 1f);
+                Gizmos.DrawLine(transform.position, grapplingHook.GrapplePoint);
             }
         }
 

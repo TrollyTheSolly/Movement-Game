@@ -7,13 +7,13 @@ public abstract class PlayerSimpleAirMovement : IPlayerState
 
     protected Vector3 ApplyAirControl(PlayerContext context, Vector3 currentVelocity, float controlFactor)
     {
-        Vector3 inputDir = new Vector3(context.moveInput.x, 0f, context.moveInput.y);
-        inputDir = context.cameraTransform.TransformDirection(inputDir);
+        Vector3 inputDir = new Vector3(context.MoveInput.x, 0f, context.MoveInput.y);
+        inputDir = context.CameraTransform.TransformDirection(inputDir);
         inputDir.y = 0f;
         inputDir.Normalize();
 
         Vector3 velocityChange = Vector3.zero;
-        float maxAirAccel = context.movementConfig.airborneAcceleration * Time.fixedDeltaTime * controlFactor;
+        float maxAirAccel = context.MovementConfig.airborneAcceleration * Time.fixedDeltaTime * controlFactor;
 
         if (inputDir.sqrMagnitude > 0.001f)
         {

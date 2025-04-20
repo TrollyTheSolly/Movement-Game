@@ -34,7 +34,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private void Awake()
     {
-        _cameraTransform = Camera.main.transform;
+        _cameraTransform = Camera.main?.transform;
 
         // If we don't have a reference, try to get from this GameObject
         if (inputHandler == null)
@@ -69,7 +69,7 @@ public class PlayerStateManager : MonoBehaviour
     private void OnDisable()
     {
         // Unsubscribe from input events
-        if (inputHandler != null)
+        if (inputHandler)
         {
             inputHandler.OnJumpInput -= HandleJumpInput;
         }
@@ -85,13 +85,12 @@ public class PlayerStateManager : MonoBehaviour
 
     private IPlayerState LookupState(State state)
     {
-        IPlayerState output;
-        _stateMap.TryGetValue(state, out output);
+        _stateMap.TryGetValue(state, out var output);
         return output;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         UpdateContext();
         State newState = DecideState();
@@ -148,19 +147,18 @@ public class PlayerStateManager : MonoBehaviour
 
     void UpdateContext()
     {
-        _context.moveInput = inputHandler.GetMoveInput();  // Use the input handler
-        _context.currentVelocity = currentVelocity;
-        _context.position = transform.position;
-        _context.cameraTransform = _cameraTransform;
-        _context.movementConfig = movementConfig;
-        _context.playerTool = toolManager.GetCurrentTool();
+        _context.MoveInput = inputHandler.GetMoveInput();  // Use the input handler
+        _context.CurrentVelocity = currentVelocity;
+        _context.Position = transform.position;
+        _context.CameraTransform = _cameraTransform;
+        _context.MovementConfig = movementConfig;
+        _context.PlayerTool = toolManager.GetCurrentTool();
     }
 
     State DecideState()
     {
         _lastState = _currentState;
-        var grapplingHook = toolManager.GetCurrentTool() as ToolGrapplingHook;
-        if (grapplingHook != null && grapplingHook.IsActive())
+        if (toolManager.GetCurrentTool() is ToolGrapplingHook grapplingHook && grapplingHook.IsActive())
         {
             return State.Grappling;
         }

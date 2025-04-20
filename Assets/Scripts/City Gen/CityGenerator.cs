@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.ProBuilder.Shapes;
+using UnityEngine.Serialization;
 
 public class ProceduralCityGenerator : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class ProceduralCityGenerator : MonoBehaviour
     public int chunkSize = 100; // Size of each city chunk
     public int generationRadius = 200; // How far ahead to generate
     public float buildingDensity = 0.3f; // 0-1, how packed buildings are
-    public int BuildingsPerChunk = 1;
+    [FormerlySerializedAs("BuildingsPerChunk")] public int buildingsPerChunk = 1;
 
     [Header("Building Settings")]
     public Vector2 buildingWidthRange = new Vector2(5, 20);
@@ -17,15 +18,15 @@ public class ProceduralCityGenerator : MonoBehaviour
     public Vector2 buildingHeightRange = new Vector2(10, 50);
     public Material[] buildingMaterials;
 
-    private Transform player;
-    private Dictionary<Vector2Int, bool> generatedChunks = new Dictionary<Vector2Int, bool>();
-    private List<GameObject> spawnedBuildings = new List<GameObject>();
+    private Transform _player;
+    private Dictionary<Vector2Int, bool> _generatedChunks = new Dictionary<Vector2Int, bool>();
+    private List<GameObject> _spawnedBuildings = new List<GameObject>();
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        _player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        if (player == null)
+        if (_player == null)
         {
             Debug.LogError("No player found in scene! Add a GameObject with 'Player' tag.");
             return;
@@ -36,7 +37,7 @@ public class ProceduralCityGenerator : MonoBehaviour
 
     private void Update()
     {
-        if (player == null) return;
+        if (_player == null) return;
 
         Vector2Int currentChunk = GetCurrentChunkCoord();
 
@@ -49,10 +50,10 @@ public class ProceduralCityGenerator : MonoBehaviour
             {
                 Vector2Int chunkCoord = new Vector2Int(currentChunk.x + x, currentChunk.y + z);
 
-                if (!generatedChunks.ContainsKey(chunkCoord))
+                if (!_generatedChunks.ContainsKey(chunkCoord))
                 {
                     GenerateChunk(chunkCoord);
-                    generatedChunks[chunkCoord] = true;
+                    _generatedChunks[chunkCoord] = true;
                 }
             }
         }
@@ -70,14 +71,14 @@ public class ProceduralCityGenerator : MonoBehaviour
             for (int z = -chunksInRadius; z <= chunksInRadius; z++)
             {
                 GenerateChunk(new Vector2Int(x, z));
-                generatedChunks[new Vector2Int(x, z)] = true;
+                _generatedChunks[new Vector2Int(x, z)] = true;
             }
         }
     }
 
     private void GenerateChunk(Vector2Int chunkCoord)
     {
-        int buildingsPerChunk = BuildingsPerChunk;
+        int buildingsPerChunk = this.buildingsPerChunk;
 
         for (int i = 0; i < buildingsPerChunk; i++)
         {
@@ -86,7 +87,7 @@ public class ProceduralCityGenerator : MonoBehaviour
             float zPos = chunkCoord.y * chunkSize + Random.Range(0, chunkSize);
 
             // Skip if position is too close to player (to avoid spawning inside player)
-            if (Vector3.Distance(new Vector3(xPos, 0, zPos), player.position) < 20f)
+            if (Vector3.Distance(new Vector3(xPos, 0, zPos), _player.position) < 20f)
                 continue;
 
             CreateBuilding(new Vector3(xPos, 0, zPos));
@@ -123,49 +124,49 @@ public class ProceduralCityGenerator : MonoBehaviour
             }
         }
 
-        spawnedBuildings.Add(building);
+        _spawnedBuildings.Add(building);
     }
 
     private Vector2Int GetCurrentChunkCoord()
     {
-        int x = Mathf.FloorToInt(player.position.x / chunkSize);
-        int z = Mathf.FloorToInt(player.position.z / chunkSize);
+        int x = Mathf.FloorToInt(_player.position.x / chunkSize);
+        int z = Mathf.FloorToInt(_player.position.z / chunkSize);
         return new Vector2Int(x, z);
     }
 
     private void CleanupDistantBuildings()
     {
         float cleanupDistance = generationRadius * 1.5f;
-        Vector3 playerPos = player.position;
+        Vector3 playerPos = _player.position;
 
-        for (int i = spawnedBuildings.Count - 1; i >= 0; i--)
+        for (int i = _spawnedBuildings.Count - 1; i >= 0; i--)
         {
-            if (spawnedBuildings[i] == null)
+            if (_spawnedBuildings[i] == null)
             {
-                spawnedBuildings.RemoveAt(i);
+                _spawnedBuildings.RemoveAt(i);
                 continue;
             }
 
             // Calculate horizontal distance only (ignoring Y axis)
             Vector2 playerPosHorizontal = new Vector2(playerPos.x, playerPos.z);
-            Vector2 buildingPosHorizontal = new Vector2(spawnedBuildings[i].transform.position.x, spawnedBuildings[i].transform.position.z);
+            Vector2 buildingPosHorizontal = new Vector2(_spawnedBuildings[i].transform.position.x, _spawnedBuildings[i].transform.position.z);
             float horizontalDistance = Vector2.Distance(playerPosHorizontal, buildingPosHorizontal);
 
             if (horizontalDistance > cleanupDistance)
             {
-                Destroy(spawnedBuildings[i]);
-                spawnedBuildings.RemoveAt(i);
+                Destroy(_spawnedBuildings[i]);
+                _spawnedBuildings.RemoveAt(i);
             }
         }
     }
 
     private void OnDrawGizmosSelected()
     {
-        if (player == null) return;
+        if (_player == null) return;
 
         // Draw generation radius
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(player.position, generationRadius);
+        Gizmos.DrawWireSphere(_player.position, generationRadius);
 
         // Draw current chunk
         Vector2Int chunk = GetCurrentChunkCoord();

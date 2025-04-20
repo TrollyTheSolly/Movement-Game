@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 public class PlayerUIManager : MonoBehaviour
 {
     public UIDocument ui;
-    private List<DropdownField> dropdowns = new List<DropdownField>();
+    private List<DropdownField> _dropdowns = new List<DropdownField>();
     [SerializeField] private PlayerToolManager toolManager;
 
 
@@ -26,7 +26,7 @@ public class PlayerUIManager : MonoBehaviour
             if (field != null)
             {
                 int index = i - 1; // Closure-safe index
-                dropdowns.Add(field);
+                _dropdowns.Add(field);
 
                 // Register callback
                 field.RegisterValueChangedCallback(evt =>
@@ -34,19 +34,19 @@ public class PlayerUIManager : MonoBehaviour
                     switch (evt.newValue)
                     {
                         case "Grappling Hook":
-                            toolManager.toolbelt[index] = new ToolGrapplingHook();
+                            toolManager.Toolbelt[index] = new ToolGrapplingHook();
                             break;
                         case "Ghost Dash":
-                            toolManager.toolbelt[index] = new ToolGhostDash();
+                            toolManager.Toolbelt[index] = new ToolGhostDash();
                             break;
                         case "Rocket Launcher":
-                            toolManager.toolbelt[index] = new ToolRocketLauncher();
+                            toolManager.Toolbelt[index] = new ToolRocketLauncher();
                             break;
                         case "Momentum Freezer":
-                            toolManager.toolbelt[index] = new ToolMomentumFreezer();
+                            toolManager.Toolbelt[index] = new ToolMomentumFreezer();
                             break;
                         default:
-                            toolManager.toolbelt[index] = null;
+                            toolManager.Toolbelt[index] = null;
                             break;
                     }
                 });

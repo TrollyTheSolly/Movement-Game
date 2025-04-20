@@ -3,14 +3,14 @@ using UnityEngine;
 public class ToolTeleportOrb : ToolBase
 {
 
-    [SerializeField] private TeleportOrbConfig config;
-    private GameObject player;
-    private GameObject teleportOrbInstance;
+    [SerializeField] private TeleportOrbConfig _config;
+    private GameObject _player;
+    private GameObject _teleportOrbInstance;
 
     public ToolTeleportOrb()
     {
-        config = Resources.Load<TeleportOrbConfig>("Configs/TeleportOrbConfig");
-        if (config == null)
+        _config = Resources.Load<TeleportOrbConfig>("Configs/TeleportOrbConfig");
+        if (_config == null)
         {
             Debug.LogError("TeleportOrbConfig not found! Make sure it is in Resources/Configs/");
         }
@@ -18,15 +18,15 @@ public class ToolTeleportOrb : ToolBase
 
     public override void Activate(ToolContext context)
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        if (teleportOrbInstance != null) GameObject.Destroy(teleportOrbInstance);
-        teleportOrbInstance = GameObject.Instantiate(config.teleportOrbPrefab, context.PlayerLocation + context.CameraTransform.forward * 2, Quaternion.identity);
-        teleportOrbInstance.GetComponent<TeleportOrbBehaviour>().Configure(context.CameraTransform, config, player);
+        _player = GameObject.FindGameObjectWithTag("Player");
+        if (_teleportOrbInstance != null) GameObject.Destroy(_teleportOrbInstance);
+        _teleportOrbInstance = GameObject.Instantiate(_config.teleportOrbPrefab, context.PlayerLocation + context.CameraTransform.forward * 2, Quaternion.identity);
+        _teleportOrbInstance.GetComponent<TeleportOrbBehaviour>().Configure(context.CameraTransform, _config, _player);
     }
 
     public override void Clear(ToolContext context)
     {
-        GameObject.Destroy(teleportOrbInstance);
+        GameObject.Destroy(_teleportOrbInstance);
     }
 
     public override void Held(ToolContext context)

@@ -3,14 +3,14 @@ using static UnityEngine.Rendering.STP;
 
 public class ToolJumpPad : ToolBase
 {
-    public JumpPadConfig config;
-    public GameObject jumpPadPrefab;
+    public JumpPadConfig Config;
+    public GameObject JumpPadPrefab;
     private GameObject _jumpPadInstance;
 
     public ToolJumpPad()
     {
-        config = Resources.Load<JumpPadConfig>("Configs/JumpPadConfig");
-        if (config == null)
+        Config = Resources.Load<JumpPadConfig>("Configs/JumpPadConfig");
+        if (Config == null)
         {
             Debug.LogError("JumpPadConfig not found! Make sure it is in Resources/Configs/");
         }
@@ -18,9 +18,9 @@ public class ToolJumpPad : ToolBase
 
     public override void Activate(ToolContext context)
     {
-        _jumpPadInstance = GameObject.Instantiate(config.JumpPadPrefab, context.PlayerLocation + context.CameraTransform.forward * 2, Quaternion.identity);
-        _jumpPadInstance.GetComponent<Rigidbody>().AddForce(context.CameraTransform.forward * config.ThrowForce);
-        _jumpPadInstance.GetComponent<JumpPadBehaviour>().Configure(config.JumpForce);
+        _jumpPadInstance = GameObject.Instantiate(Config.jumpPadPrefab, context.PlayerLocation + context.CameraTransform.forward * 2, Quaternion.identity);
+        _jumpPadInstance.GetComponent<Rigidbody>().AddForce(context.CameraTransform.forward * Config.throwForce);
+        _jumpPadInstance.GetComponent<JumpPadBehaviour>().Configure(Config.jumpForce);
     }
 
     public override void Clear(ToolContext context)

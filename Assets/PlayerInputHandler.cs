@@ -12,67 +12,67 @@ public class PlayerInputHandler : MonoBehaviour
     public event MoveInputEvent OnMoveInput;
     public event RunInputEvent OnRunInput;
 
-    private PlayerInputActions playerControls;
-    private bool jumpTriggered = false;
-    private Vector2 moveInput = Vector2.zero;
-    private bool isRunning = false;
+    private PlayerInputActions _playerControls;
+    private bool _jumpTriggered = false;
+    private Vector2 _moveInput = Vector2.zero;
+    private bool _isRunning = false;
 
     private void Awake()
     {
-        playerControls = new PlayerInputActions();
+        _playerControls = new PlayerInputActions();
     }
 
     private void OnEnable()
     {
-        playerControls.Enable();
+        _playerControls.Enable();
 
         // Setup input callbacks
-        playerControls.Player.Jump.performed += ctx => jumpTriggered = true;
-        playerControls.Player.Jump.canceled += ctx => jumpTriggered = false;
-        playerControls.Player.Run.performed += ctx => isRunning = true;
-        playerControls.Player.Run.canceled += ctx => isRunning = false;
+        _playerControls.Player.Jump.performed += ctx => _jumpTriggered = true;
+        _playerControls.Player.Jump.canceled += ctx => _jumpTriggered = false;
+        _playerControls.Player.Run.performed += ctx => _isRunning = true;
+        _playerControls.Player.Run.canceled += ctx => _isRunning = false;
     }
 
     private void OnDisable()
     {
-        playerControls.Disable();
+        _playerControls.Disable();
     }
 
     private void Update()
     {
         // Read move input and broadcast it
-        moveInput = playerControls.Player.Move.ReadValue<Vector2>();
-        OnMoveInput?.Invoke(moveInput);
+        _moveInput = _playerControls.Player.Move.ReadValue<Vector2>();
+        OnMoveInput?.Invoke(_moveInput);
 
         // Broadcast jump input
-        if (jumpTriggered)
+        if (_jumpTriggered)
         {
             OnJumpInput?.Invoke(true);
-            jumpTriggered = false;  // Reset after broadcasting
+            _jumpTriggered = false;  // Reset after broadcasting
         }
 
         // Broadcast run input
-        OnRunInput?.Invoke(playerControls.Player.Run.IsPressed());
+        OnRunInput?.Invoke(_playerControls.Player.Run.IsPressed());
     }
 
     // Accessor methods for direct polling if needed
     public Vector2 GetMoveInput()
     {
-        return moveInput;
+        return _moveInput;
     }
 
     public bool IsJumpTriggered()
     {
-        return playerControls.Player.Jump.triggered;
+        return _playerControls.Player.Jump.triggered;
     }
 
     public bool IsJumpBufferable()
     {
-        return playerControls.Player.Jump.triggered;
+        return _playerControls.Player.Jump.triggered;
     }
 
     public bool IsRunning()
     {
-        return playerControls.Player.Run.IsPressed();
+        return _playerControls.Player.Run.IsPressed();
     }
 }

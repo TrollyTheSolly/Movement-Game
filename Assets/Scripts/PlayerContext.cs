@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class PlayerContext
 {
-    public Vector3 currentVelocity = Vector3.zero;
-    public Vector3 position = Vector3.zero;
-    public Transform cameraTransform;
-    public PlayerMovementConfig movementConfig;
-    public ToolBase playerTool;
+    public Vector3 CurrentVelocity = Vector3.zero;
+    public Vector3 Position = Vector3.zero;
+    public Transform CameraTransform;
+    public PlayerMovementConfig MovementConfig;
+    public ToolBase PlayerTool;
 
-    public Vector2 moveInput;
-    public bool jumpPressed;
-    public bool jumpHeld;
+    public Vector2 MoveInput;
+    public bool JumpPressed;
+    public bool JumpHeld;
 }

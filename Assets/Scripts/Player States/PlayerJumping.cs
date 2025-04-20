@@ -14,8 +14,8 @@ public class PlayerJumping : IPlayerState
 
     public Vector3 Update(PlayerContext context)
     {
-        Vector3 newVelocity = context.currentVelocity;
-        newVelocity.y = context.movementConfig.jumpForce;
+        Vector3 newVelocity = context.CurrentVelocity;
+        newVelocity.y = context.MovementConfig.jumpForce;
         return newVelocity;
     }
 }

@@ -3,43 +3,43 @@ using UnityEngine;
 
 public class ToolMomentumFreezer : ToolBase
 {
-    private Vector3 storedVelocity = Vector3.zero;
-    private bool velocityStored = false;
-    private MomentumFreezerConfig config;
-    private GameObject instantiatedHeldFreezer;
+    private Vector3 _storedVelocity = Vector3.zero;
+    private bool _velocityStored = false;
+    private MomentumFreezerConfig _config;
+    private GameObject _instantiatedHeldFreezer;
 
     public ToolMomentumFreezer()
     {
-        config = Resources.Load<MomentumFreezerConfig>("Configs/MomentumFreezerConfig");
-        if (config == null)
+        _config = Resources.Load<MomentumFreezerConfig>("Configs/MomentumFreezerConfig");
+        if (_config == null)
         {
             Debug.LogError("MomentumFreezerConfig not found! Make sure it is in Resources/Configs/");
         }
     }
     public override void Activate(ToolContext context)
     {
-        if (velocityStored)
+        if (_velocityStored)
         {
             Debug.Log("Velocity applied");
             Vector3 newLookDirection = context.CameraTransform.forward;
 
-            float speed = storedVelocity.magnitude;
+            float speed = _storedVelocity.magnitude;
 
             Vector3 redirectedVelocity = newLookDirection * speed;
 
             context.ModifierSystem.AddModifier(redirectedVelocity);
 
-            velocityStored = false;
+            _velocityStored = false;
             UpdateText("");
             return;
         } else
         {
             Debug.Log("Velocity saved");
-            storedVelocity = context.PlayerVelocity;
-            context.ModifierSystem.AddModifier(-storedVelocity);
-            velocityStored = true;
-            float velocityToStore = storedVelocity.magnitude * 10;
-            UpdateText(FormatVelocity(storedVelocity));
+            _storedVelocity = context.PlayerVelocity;
+            context.ModifierSystem.AddModifier(-_storedVelocity);
+            _velocityStored = true;
+            float velocityToStore = _storedVelocity.magnitude * 10;
+            UpdateText(FormatVelocity(_storedVelocity));
             return;
         }
     }
@@ -51,17 +51,17 @@ public class ToolMomentumFreezer : ToolBase
 
     public override void Held(ToolContext context)
     {
-        instantiatedHeldFreezer = GameObject.Instantiate(config.HeldMomentumFreezerPrefab, context.CameraTransform);
-        if (velocityStored)
+        _instantiatedHeldFreezer = GameObject.Instantiate(_config.heldMomentumFreezerPrefab, context.CameraTransform);
+        if (_velocityStored)
         {
-            UpdateText(FormatVelocity(storedVelocity));
+            UpdateText(FormatVelocity(_storedVelocity));
         }
     }
 
     public override void Unheld(ToolContext context)
     {
         Debug.Log("Destroying tool...");
-        GameObject.Destroy(instantiatedHeldFreezer);
+        GameObject.Destroy(_instantiatedHeldFreezer);
     }
 
     private string FormatVelocity(Vector3 inVector)
@@ -73,6 +73,6 @@ public class ToolMomentumFreezer : ToolBase
 
     private void UpdateText(string newText)
     {
-        instantiatedHeldFreezer.GetComponentInChildren<TextMeshPro>().text = newText;
+        _instantiatedHeldFreezer.GetComponentInChildren<TextMeshPro>().text = newText;
     }
 }

@@ -6,7 +6,7 @@ public class EdgeCubeScaler : MonoBehaviour
 {
     public GameObject edgePrefab; // Assign the edge prefab in the inspector
     public Vector3 edgeThickness = new Vector3(0.1f, 0.1f, 0.1f); // Customizable thickness of the edge
-    private List<GameObject> edges = new List<GameObject>();
+    private List<GameObject> _edges = new List<GameObject>();
 
     void Start()
     {
@@ -82,13 +82,13 @@ public class EdgeCubeScaler : MonoBehaviour
             edge.transform.position = transform.position + transform.rotation * edgeCenters[i];
             edge.transform.rotation = transform.rotation;
             edge.transform.localScale = edgeScales[i];
-            edges.Add(edge);
+            _edges.Add(edge);
         }
     }
 
     private void OnDestroy()
     {
-        foreach(var edge in edges)
+        foreach(var edge in _edges)
         {
             Destroy(edge);
         }
