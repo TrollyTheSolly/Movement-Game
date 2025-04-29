@@ -7,13 +7,16 @@ public class PlayerInputHandler : MonoBehaviour
     public delegate void JumpInputEvent(bool jumpTriggered);
     public delegate void MoveInputEvent(Vector2 moveInput);
     public delegate void RunInputEvent(bool isRunning);
+    public delegate void GroundSlamInputEvent(bool groundSlamTriggered);
 
     public event JumpInputEvent OnJumpInput;
     public event MoveInputEvent OnMoveInput;
     public event RunInputEvent OnRunInput;
+    public event GroundSlamInputEvent OnGroundSlamInput;
 
     private PlayerInputActions _playerControls;
     private bool _jumpTriggered = false;
+    private bool _groundSlamTriggered = false;
     private Vector2 _moveInput = Vector2.zero;
     private bool _isRunning = false;
 
@@ -29,8 +32,11 @@ public class PlayerInputHandler : MonoBehaviour
         // Setup input callbacks
         _playerControls.Player.Jump.performed += ctx => _jumpTriggered = true;
         _playerControls.Player.Jump.canceled += ctx => _jumpTriggered = false;
+
         _playerControls.Player.Run.performed += ctx => _isRunning = true;
         _playerControls.Player.Run.canceled += ctx => _isRunning = false;
+
+        _playerControls.Player.GroundSlam.performed += ctx => _groundSlamTriggered = true;
     }
 
     private void OnDisable()
@@ -49,6 +55,13 @@ public class PlayerInputHandler : MonoBehaviour
         {
             OnJumpInput?.Invoke(true);
             _jumpTriggered = false;  // Reset after broadcasting
+        }
+
+        // Broadcast ground slam input
+        if (_groundSlamTriggered)
+        {
+            OnGroundSlamInput?.Invoke(true);
+            _groundSlamTriggered = false;  // Reset after broadcasting
         }
 
         // Broadcast run input
@@ -74,5 +87,10 @@ public class PlayerInputHandler : MonoBehaviour
     public bool IsRunning()
     {
         return _playerControls.Player.Run.IsPressed();
+    }
+
+    public bool IsGroundSlamTriggered()
+    {
+        return _groundSlamTriggered;
     }
 }

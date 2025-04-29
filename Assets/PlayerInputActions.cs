@@ -153,6 +153,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Ground Slam"",
+                    ""type"": ""Button"",
+                    ""id"": ""8f3c5849-93aa-4b80-aa16-021fd496f5e2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -419,6 +428,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Lock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14002877-a418-4718-9970-6dbee7b873c8"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ground Slam"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -495,6 +515,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Clear = m_Player.FindAction("Clear", throwIfNotFound: true);
         m_Player_Lock = m_Player.FindAction("Lock", throwIfNotFound: true);
+        m_Player_GroundSlam = m_Player.FindAction("Ground Slam", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -582,6 +603,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_Clear;
     private readonly InputAction m_Player_Lock;
+    private readonly InputAction m_Player_GroundSlam;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -621,6 +643,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Lock".
         /// </summary>
         public InputAction @Lock => m_Wrapper.m_Player_Lock;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/GroundSlam".
+        /// </summary>
+        public InputAction @GroundSlam => m_Wrapper.m_Player_GroundSlam;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -668,6 +694,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Lock.started += instance.OnLock;
             @Lock.performed += instance.OnLock;
             @Lock.canceled += instance.OnLock;
+            @GroundSlam.started += instance.OnGroundSlam;
+            @GroundSlam.performed += instance.OnGroundSlam;
+            @GroundSlam.canceled += instance.OnGroundSlam;
         }
 
         /// <summary>
@@ -700,6 +729,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Lock.started -= instance.OnLock;
             @Lock.performed -= instance.OnLock;
             @Lock.canceled -= instance.OnLock;
+            @GroundSlam.started -= instance.OnGroundSlam;
+            @GroundSlam.performed -= instance.OnGroundSlam;
+            @GroundSlam.canceled -= instance.OnGroundSlam;
         }
 
         /// <summary>
@@ -854,5 +886,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLock(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Ground Slam" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnGroundSlam(InputAction.CallbackContext context);
     }
 }

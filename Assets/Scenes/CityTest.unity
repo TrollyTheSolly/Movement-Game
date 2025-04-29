@@ -342,11 +342,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!4 &650161081 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2011486506849142327, guid: 68573f4dce4e8a7438fcbbfd6345651c, type: 3}
-  m_PrefabInstance: {fileID: 1109234074}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &918548081
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,22 +486,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 621661821057536441, guid: 68573f4dce4e8a7438fcbbfd6345651c, type: 3}
-      propertyPath: visualTransform
-      value: 
-      objectReference: {fileID: 650161081}
-    - target: {fileID: 938744308832282767, guid: 68573f4dce4e8a7438fcbbfd6345651c, type: 3}
-      propertyPath: far clip plane
-      value: 8005.38
-      objectReference: {fileID: 0}
-    - target: {fileID: 938744308832282767, guid: 68573f4dce4e8a7438fcbbfd6345651c, type: 3}
-      propertyPath: near clip plane
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 3978433739882102000, guid: 68573f4dce4e8a7438fcbbfd6345651c, type: 3}
-      propertyPath: visualTransform
-      value: 
-      objectReference: {fileID: 650161081}
     - target: {fileID: 4770615865848354826, guid: 68573f4dce4e8a7438fcbbfd6345651c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -554,10 +533,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7296908110279116043, guid: 68573f4dce4e8a7438fcbbfd6345651c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1852386591}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68573f4dce4e8a7438fcbbfd6345651c, type: 3}
 --- !u!1 &1719234946
 GameObject:
@@ -728,7 +704,7 @@ MonoBehaviour:
   chunkSize: 197
   generationRadius: 2000
   buildingDensity: 0.003
-  BuildingsPerChunk: 1
+  buildingsPerChunk: 1
   buildingWidthRange: {x: 5, y: 200}
   buildingDepthRange: {x: 5, y: 200}
   buildingHeightRange: {x: 10, y: 600}
@@ -748,30 +724,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1852386586 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7296908110279116043, guid: 68573f4dce4e8a7438fcbbfd6345651c, type: 3}
-  m_PrefabInstance: {fileID: 1109234074}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &1852386590 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 938744308832282767, guid: 68573f4dce4e8a7438fcbbfd6345651c, type: 3}
-  m_PrefabInstance: {fileID: 1109234074}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1852386591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1852386586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb429cb35d67af14c998db9b8ff58396, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 1852386590}
-  allIn1DepthColoringProperties: {fileID: 11400000, guid: 9c8c5c41354cc4340aca0ede4c97ddcc, type: 2}
 --- !u!1 &2038365773
 GameObject:
   m_ObjectHideFlags: 0

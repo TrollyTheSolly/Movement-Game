@@ -8,10 +8,10 @@ public class PlayerStateManager : MonoBehaviour
     [SerializeField] private PlayerMovementConfig movementConfig;
     [SerializeField] private CharacterController controller;
     [SerializeField] private PlayerToolManager toolManager;
-    [SerializeField] private float checkHeadDistance = 0.1f;
-    [SerializeField] private Transform visualTransform;
     [SerializeField] private FeedbackManager feedbackManager;
-    [SerializeField] private PlayerInputHandler inputHandler;  // Reference to our new input handler
+    [SerializeField] private PlayerInputHandler inputHandler;
+    [SerializeField] private PlayerVisualInterpolator interpolator;
+    [SerializeField] private PlayerCollisionHandler collisionHandler;
 
     private int _framesSinceBuffer = 0;
     private bool _jumpBuffered = false;
@@ -25,12 +25,6 @@ public class PlayerStateManager : MonoBehaviour
     private bool _jumpRequested = false;
 
     private Dictionary<State, IPlayerState> _stateMap;
-
-    //Interpolation
-    private Vector3 _lastFixedPosition;
-    private Vector3 _currentFixedPosition;
-    private float _fixedDeltaTimeTimer = 0f;
-
 
     private void Awake()
     {
@@ -53,7 +47,9 @@ public class PlayerStateManager : MonoBehaviour
             [State.Airborne] = new PlayerAirborne(),
             [State.Jumping] = new PlayerJumping(),
             [State.Running] = new PlayerRunning(),
-            [State.Grappling] = new PlayerGrappling()
+            [State.Grappling] = new PlayerGrappling(),
+            [State.Wallriding] = new PlayerWallriding(),
+            [State.GroundSlam] = new PlayerGroundSlam()
         };
     }
 
@@ -90,7 +86,7 @@ public class PlayerStateManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
+    public void Tick()
     {
         UpdateContext();
         State newState = DecideState();
@@ -103,11 +99,11 @@ public class PlayerStateManager : MonoBehaviour
         {
             SetState(newPlayerState);
             CallFeedbacks();
+            Debug.Log(newPlayerState);
         }
-        InterpolatePosition();
     }
 
-    void FixedUpdate()
+    public void FixedTick()
     {
         if (_jumpBuffered)
         {
@@ -122,19 +118,22 @@ public class PlayerStateManager : MonoBehaviour
         if (_currentState != null) currentVelocity = _currentState.Update(_context);
         ApplyGravity();
         currentVelocity += modifierSystem.GetModifiers();
-        CheckHeadCollision();
-        CheckSideCollision();
+        
+        //Check collisions before moving
+        collisionHandler.CheckHeadCollision(ref currentVelocity);
+        collisionHandler.CheckSideCollision(ref currentVelocity);
+        
         controller.Move(currentVelocity);
         //Interpolation
-        _lastFixedPosition = _currentFixedPosition;
-        _currentFixedPosition = transform.position;
-        _fixedDeltaTimeTimer = 0f;
+        interpolator.RegisterFixedTick(transform.position);
 
         _jumpRequested = false;
     }
 
     void ApplyGravity()
     {
+        if (_currentState == LookupState(State.Wallriding)) return;
+        
         if (controller.isGrounded && _currentState != LookupState(State.Jumping) && _currentState != LookupState(State.Grappling))
         {
             currentVelocity.y = -0.1f;
@@ -191,6 +190,10 @@ public class PlayerStateManager : MonoBehaviour
         }
         else
         {
+            if (inputHandler.IsGroundSlamTriggered() || _currentState == LookupState(State.GroundSlam))
+            {
+                return State.GroundSlam;
+            }
             return State.Airborne;
         }
     }
@@ -206,58 +209,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         return currentVelocity;
     }
-
-    void CheckHeadCollision()
-    {
-        Vector3 top = transform.position + Vector3.up * (controller.height / 2f);
-        if (Physics.Raycast(top, Vector3.up, checkHeadDistance))
-        {
-            if (currentVelocity.y > 0)
-            {
-                currentVelocity.y = 0;
-            }
-        }
-    }
-
-    void CheckSideCollision()
-    {
-        Vector3[] directions = {
-        transform.right,       // Right
-        -transform.right,      // Left
-        transform.forward,     // Forward
-        -transform.forward     // Backward
-    };
-
-        Vector3 center = transform.position + Vector3.up * (controller.height / 2f); // Approximate body center
-
-        foreach (var dir in directions)
-        {
-            if (Physics.Raycast(center, dir, out RaycastHit hit, controller.radius + 0.1f))
-            {
-                Vector3 horizontalVelocity = new Vector3(currentVelocity.x, 0f, currentVelocity.z);
-                if (Vector3.Dot(horizontalVelocity, dir) > 0)
-                {
-                    currentVelocity.x = 0;
-                    currentVelocity.z = 0;
-                    break;
-                }
-            }
-        }
-    }
-
-    private void InterpolatePosition()
-    {
-        if (movementConfig.interpolate == false) return;
-
-        _fixedDeltaTimeTimer += Time.deltaTime;
-
-        float interpolationFactor = _fixedDeltaTimeTimer / Time.fixedDeltaTime;
-        interpolationFactor = Mathf.Clamp01(interpolationFactor);
-
-        Vector3 interpolatedPosition = Vector3.Lerp(_lastFixedPosition, _currentFixedPosition, interpolationFactor);
-        visualTransform.position = interpolatedPosition;
-    }
-
+    
     private void CallFeedbacks()
     {
         if (_lastState != _currentState && _lastState == LookupState(State.Airborne) && _currentState != LookupState(State.Jumping) && _currentState != LookupState(State.Grappling))

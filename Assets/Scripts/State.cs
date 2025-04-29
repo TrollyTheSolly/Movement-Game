@@ -4,5 +4,7 @@ public enum State
     Airborne,
     Jumping,
     Running,
-    Grappling
+    Grappling,
+    Wallriding,
+	GroundSlam
 }

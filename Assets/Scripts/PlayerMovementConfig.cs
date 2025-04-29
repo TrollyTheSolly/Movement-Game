@@ -13,4 +13,7 @@ public class PlayerMovementConfig : ScriptableObject
     public float airborneAcceleration = 1f;
     public int jumpBufferFrames = 30;
     public bool interpolate = false;
+    public float groundSlamAcceleration;
+    public float groundSlamSpeed;
+    public bool groundSlamCancelVerticalVelocity;
 }
