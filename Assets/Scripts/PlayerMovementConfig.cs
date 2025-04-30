@@ -16,4 +16,5 @@ public class PlayerMovementConfig : ScriptableObject
     public float groundSlamAcceleration;
     public float groundSlamSpeed;
     public bool groundSlamCancelVerticalVelocity;
+    public bool doubleJumpEnabled;
 }

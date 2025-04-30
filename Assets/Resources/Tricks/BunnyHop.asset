@@ -15,7 +15,7 @@ MonoBehaviour:
   trickName: Bunny Hop
   requiredSequence: 0100000002000000
   baseScore: 100
-  comboTimeout: 3
+  comboTimeout: 2.5
   hasEndSequence: 0
   endSequence: 
   requiredStartMultiplier: 0

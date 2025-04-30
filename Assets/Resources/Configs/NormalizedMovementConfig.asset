@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e880cd2dc99464448c309c59d4e11ae, type: 3}
-  m_Name: DefaultPlayerMovement
+  m_Name: NormalizedMovementConfig
   m_EditorClassIdentifier: 
-  gravity: 1
-  walkSpeed: 0.5
-  runSpeed: 1
-  jumpForce: 0.75
-  acceleration: 5.52
+  gravity: 0.5
+  walkSpeed: 0.34
+  runSpeed: 0.6
+  jumpForce: 0.25
+  acceleration: 1
   decelerationRate: 3.71
   overSpeedDeceleration: 5
-  airborneAcceleration: 1
+  airborneAcceleration: 0.26
   jumpBufferFrames: 24
   interpolate: 1
   groundSlamAcceleration: 14.84
   groundSlamSpeed: 20.43
   groundSlamCancelVerticalVelocity: 1
+  doubleJumpEnabled: 1

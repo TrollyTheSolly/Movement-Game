@@ -19,6 +19,7 @@ public class ScoreManager : MonoBehaviour
     [Header("Scoring & UI")]
     [SerializeField] private int totalScore = 0;
     [SerializeField] private TextMeshProUGUI totalScoreText; // Assign a TextMeshProUGUI element to show the total score
+    [SerializeField] private ScoreCounterPlayer scoreCounterPlayer;
     //[SerializeField] private GameObject trickTextPrefab; // Assign a Prefab with a TextMeshProUGUI component
     [SerializeField] private Transform trickTextContainer; // Assign a Panel/GameObject (ideally with a VerticalLayoutGroup) where trick texts will appear
 
@@ -56,7 +57,7 @@ public class ScoreManager : MonoBehaviour
             return;
         }
 
-        UpdateTotalScoreUI(); // Initialize total score display
+        UpdateTotalScoreUI(0); // Initialize total score display
     }
 
     // --- Main Loop ---
@@ -229,11 +230,13 @@ public class ScoreManager : MonoBehaviour
                 {
                     trick.UiTextElement.enabled = true;
                     trick.UiTextElement.gameObject.SetActive(true);
+                    if (trick.UiTextElement.transform.parent) trick.UiTextElement.transform.parent.gameObject.SetActive(true);
                 }
             }
             else
             {
                 trick.UiTextElement.gameObject.SetActive(true);
+                if (trick.UiTextElement.transform.parent) trick.UiTextElement.transform.parent.gameObject.SetActive(true);
             }
         }
     }
@@ -249,14 +252,14 @@ public class ScoreManager : MonoBehaviour
     private void AddScore(int amount)
     {
         totalScore += amount;
-        UpdateTotalScoreUI();
+        UpdateTotalScoreUI(amount);
     }
 
-    private void UpdateTotalScoreUI()
+    private void UpdateTotalScoreUI(int addedScore)
     {
         if (totalScoreText != null)
         {
-            totalScoreText.text = $"Score: {totalScore}";
+            scoreCounterPlayer.AddScore(addedScore);
         }
     }
 

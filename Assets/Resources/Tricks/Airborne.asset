@@ -15,7 +15,7 @@ MonoBehaviour:
   trickName: Airborne
   requiredSequence: 01000000
   baseScore: 2
-  comboTimeout: 0.2
+  comboTimeout: 0.05
   hasEndSequence: 0
   endSequence: 00000000
   requiredStartMultiplier: 26

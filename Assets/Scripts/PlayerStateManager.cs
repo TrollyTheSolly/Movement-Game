@@ -24,6 +24,8 @@ public class PlayerStateManager : MonoBehaviour
     private Transform _cameraTransform;
 
     private bool _jumpRequested = false;
+    private bool _canDoubleJump = false;
+    private bool _doubleJumpRequested = false;
 
     private Dictionary<State, IPlayerState> _stateMap;
 
@@ -50,7 +52,8 @@ public class PlayerStateManager : MonoBehaviour
             [State.Running] = new PlayerRunning(),
             [State.Grappling] = new PlayerGrappling(),
             [State.Wallriding] = new PlayerWallriding(),
-            [State.GroundSlam] = new PlayerGroundSlam()
+            [State.GroundSlam] = new PlayerGroundSlam(),
+            [State.DoubleJump] = new PlayerDoubleJump()
         };
     }
 
@@ -94,11 +97,21 @@ public class PlayerStateManager : MonoBehaviour
         _currentEnumState = newState;
 
         if (newState == State.Jumping) _jumpRequested = true;
+        if (newState == State.DoubleJump) _doubleJumpRequested = true;
+        
+        //if (controller.isGrounded && !DidBunnyhop()) _canDoubleJump = true;
+        
 
         IPlayerState newPlayerState = LookupState(newState);
 
         if (newPlayerState != _currentState)
         {
+            if ((_currentState == LookupState(State.Airborne)) && 
+                (newState == State.Walking || newState == State.Running))
+            {
+                _canDoubleJump = true;
+            }
+            
             SetState(newPlayerState);
             CallFeedbacks();
             Debug.Log(newPlayerState);
@@ -130,6 +143,7 @@ public class PlayerStateManager : MonoBehaviour
         interpolator.RegisterFixedTick(transform.position);
 
         _jumpRequested = false;
+        _doubleJumpRequested = false;
     }
 
     void ApplyGravity()
@@ -195,6 +209,12 @@ public class PlayerStateManager : MonoBehaviour
             if (inputHandler.IsGroundSlamTriggered() || _currentState == LookupState(State.GroundSlam))
             {
                 return State.GroundSlam;
+            }
+
+            if (((inputHandler.IsJumpTriggered() && _canDoubleJump) || _doubleJumpRequested) && movementConfig.doubleJumpEnabled)
+            {
+                _canDoubleJump = false;
+                return State.DoubleJump;
             }
             return State.Airborne;
         }

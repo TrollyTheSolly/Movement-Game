@@ -15,7 +15,7 @@ MonoBehaviour:
   rocketPrefab: {fileID: 7518717797079246094, guid: f4eebdbe2927d844d859a4bec1cb45fe, type: 3}
   rocketSpeed: 761.2
   explosionRadius: 68.8
-  explosionForce: 0.7
+  explosionForce: 0.15
   explosionRadiusFalloff: 0.5
   explosionEffect: {fileID: 7908841552912997305, guid: 0a622b3866351544292fcfbfd92b7db7, type: 3}
   rocketLauncherPrefab: {fileID: 5318671779316481591, guid: 4245a89d59cab6a44bbb68e83748b89c, type: 3}

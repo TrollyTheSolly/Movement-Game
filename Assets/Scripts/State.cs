@@ -6,5 +6,6 @@ public enum State
     Running,
     Grappling,
     Wallriding,
-	GroundSlam
+	GroundSlam,
+	DoubleJump
 }
