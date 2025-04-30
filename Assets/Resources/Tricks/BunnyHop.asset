@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92106dedafea6044685452e7da5393f6, type: 3}
+  m_Name: BunnyHop
+  m_EditorClassIdentifier: 
+  trickName: Bunny Hop
+  requiredSequence: 0100000002000000
+  baseScore: 100
+  comboTimeout: 3
+  hasEndSequence: 0
+  endSequence: 
+  requiredStartMultiplier: 0
+  trickTextPrefab: {fileID: 941620147169718704, guid: 9a0ba7d128ccec944936509bf84c6d51, type: 3}

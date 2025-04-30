@@ -18,6 +18,7 @@ public class PlayerStateManager : MonoBehaviour
 
     private IPlayerState _currentState;
     private IPlayerState _lastState;
+    private State _currentEnumState;
 
     private PlayerContext _context = new PlayerContext();
     private Transform _cameraTransform;
@@ -90,6 +91,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         UpdateContext();
         State newState = DecideState();
+        _currentEnumState = newState;
 
         if (newState == State.Jumping) _jumpRequested = true;
 
@@ -222,5 +224,10 @@ public class PlayerStateManager : MonoBehaviour
             feedbackManager.PlayJumpFeedback();
             return;
         }
+    }
+
+    public State GetCurrentState()
+    {
+        return _currentEnumState;
     }
 }

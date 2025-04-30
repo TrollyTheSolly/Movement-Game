@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92106dedafea6044685452e7da5393f6, type: 3}
+  m_Name: Airborne
+  m_EditorClassIdentifier: 
+  trickName: Airborne
+  requiredSequence: 01000000
+  baseScore: 2
+  comboTimeout: 0.2
+  hasEndSequence: 0
+  endSequence: 00000000
+  requiredStartMultiplier: 26
+  trickTextPrefab: {fileID: 941620147169718704, guid: de9a725f35edc314d86e9e7fc096cb0d, type: 3}
